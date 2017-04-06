@@ -1,27 +1,92 @@
-# coding: utf-8
+from refo import Group, Plus, Question
+from quepy.parsing import Lemma, Pos, QuestionTemplate, Token, Particle, \
+                          Lemmas
+from quepy.dsl import HasKeyword, IsRelatedTo, HasType
+from dsl import DefinitionOf, LabelOf, IsPlace, \
+    UTCof, LocationOf
 
-"""
-Basic queries for db quepy.
-"""
 
-from dsl import *
-from refo import Group, Question
-from quepy.dsl import HasKeyword
-from quepy.parsing import Lemma, Pos, QuestionTemplate
+# Openings
+LISTOPEN = Lemma("list") | Lemma("name")
 
-from dsl import IsDefinedIn
+
+class Thing(Particle):
+    regex = Question(Pos("JJ")) + (Pos("NN") | Pos("NNP") | Pos("NNS")) |\
+            Pos("VBN")
+
+    def interpret(self, match):
+        return HasKeyword(match.words.tokens)
+
 
 class WhatIs(QuestionTemplate):
     """
-    Regex for questions like "What is ..."
+    Regex for questions like "What is a blowtorch
     Ex: "What is a car"
+        "What is Seinfield?"
     """
 
-    target = Question(Pos("DT")) + Group(Pos("NN"), "target")
-    regex = Lemma("what") + Lemma("be") + target + Question(Pos("."))
+    regex = Lemma("what") + Lemma("be") + Question(Pos("DT")) + \
+        Thing() + Question(Pos("."))
 
     def interpret(self, match):
-        thing = match.target.tokens
-        target = HasKeyword(thing)
-        definition = IsDefinedIn(target)
-        return definition
+        label = DefinitionOf(match.thing)
+
+        return label, "define"
+
+
+class ListEntity(QuestionTemplate):
+    """
+    Regex for questions like "List Microsoft software"
+    """
+
+    entity = Group(Pos("NNP"), "entity")
+    target = Group(Pos("NN") | Pos("NNS"), "target")
+    regex = LISTOPEN + entity + target
+
+    def interpret(self, match):
+        entity = HasKeyword(match.entity.tokens)
+        target_type = HasKeyword(match.target.lemmas)
+        target = HasType(target_type) + IsRelatedTo(entity)
+        label = LabelOf(target)
+
+        return label, "enum"
+
+
+class WhatTimeIs(QuestionTemplate):
+    """
+    Regex for questions about the time
+    Ex: "What time is it in Cordoba"
+    """
+
+    nouns = Plus(Pos("NN") | Pos("NNS") | Pos("NNP") | Pos("NNPS"))
+    place = Group(nouns, "place")
+    openings = (Lemma("what") +
+        ((Token("is") + Token("the") + Question(Lemma("current")) +
+        Question(Lemma("local")) + Lemma("time")) |
+        (Lemma("time") + Token("is") + Token("it")))) | \
+               Lemma("time")
+    regex = openings + Pos("IN") + place + Question(Pos("."))
+
+    def interpret(self, match):
+        place = HasKeyword(match.place.lemmas.title()) + IsPlace()
+        utc_offset = UTCof(place)
+
+        return utc_offset, "time"
+
+
+class WhereIsQuestion(QuestionTemplate):
+    """
+    Ex: "where in the world is the Eiffel Tower"
+    """
+
+    thing = Group(Plus(Pos("IN") | Pos("NP") | Pos("NNP") | Pos("NNPS")),
+                  "thing")
+    regex = Lemma("where") + Question(Lemmas("in the world")) + Lemma("be") + \
+        Question(Pos("DT")) + thing + Question(Pos("."))
+
+    def interpret(self, match):
+        thing = HasKeyword(match.thing.tokens)
+        location = LocationOf(thing)
+        location_name = LabelOf(location)
+
+        return location_name, "enum"
