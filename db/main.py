@@ -141,23 +141,6 @@ def wikipedia2dbpedia(wikipedia_url):
 
 
 if __name__ == "__main__":
-    default_questions = [
-        "What is a car?",
-        "Who is Tom Cruise?",
-        "Who is George Lucas?",
-        "Who is Mirtha Legrand?",
-        # "List Microsoft software",
-        "Name Fiat cars",
-        "time in argentina",
-        "what time is it in Chile?",
-        "List movies directed by Martin Scorsese",
-        "How long is Pulp Fiction",
-        "which movies did Mel Gibson starred?",
-        "When was Gladiator released?",
-        "who directed Pocahontas?",
-        "actors of Fight Club",
-    ]
-
     if "-d" in sys.argv:
         quepy.set_loglevel("DEBUG")
         sys.argv.remove("-d")
@@ -171,7 +154,8 @@ if __name__ == "__main__":
         else:
             questions = [question]
     else:
-        questions = default_questions
+        print ("Unable to identify the sentence. Please use a valid syntax.")
+        sys.exit(0)
 
     print_handlers = {
         "define": print_define,
@@ -198,7 +182,14 @@ if __name__ == "__main__":
             print "Query not generated :(\n"
             continue
 
-        print query
+        k = query.find('PREFIX quepy')
+        l = query.find('y#>') + 3
+        temp = []
+        for i in range(len(query)):
+            if (i<k) or (i>299):
+                temp.append(query[i])
+        query1 = "".join(temp[i] for i in range(len(temp)))
+        print query1
 
         if target.startswith("?"):
             target = target[1:]
