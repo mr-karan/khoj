@@ -1,12 +1,12 @@
 # FinalYearCSE
 CSE SNU Project Final Year
 
-# List of files:
-1)Folder db
-2)main.py
-3)README.md
+# Instructions
 
-# How to use:
+- Create a virtualenv using `virtualenv venv -p /usr/bin/python2.7`
+- source venv/bin/activate
+- pip install -r requirements.txt
 
-1)Install all the libraries mentioned in requirements.txt.
-2)Run main.py using python2 as python2 main.py <your query> and this gives you the desired result.
+- NLTK_DATA_PATH = ['/Users/ninjaPython/Work/FinalYearCSE/data'] change it to your own NLTK data path in db/settings.py
+- Run python main.py
+- Open localhost:5000 in your browser
