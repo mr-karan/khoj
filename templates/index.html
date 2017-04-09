@@ -1,12 +1,39 @@
 {% extends "base.html" %}
 
 {% block body %}
+<datalist id="languages">
+  <option value="What is a car?">
+  <option value="actors of Fight Club">
+  <option value="List movies directed by Martin Scorsese">
+  <option value="How long is Pulp Fiction">
+  <option value="which movies did Mel Gibson starred?">
+  <option value="When was Gladiator released?">
+  <option value="who directed Pocahontas?">
+  <option value="Name Fiat cars">
+  <option value="time in argentina">
+  <option value="what time is it in Chile?">
+  <option value="Who is Tom Cruise?">
+  <option value="Who is George Lucas?">
+  <option value="Who is Mirtha Legrand?">
+  <option value="List Microsoft software">
+
+
+
+</datalist>
+
 <div class="ui middle aligned center aligned grid">
   <div class="column">
+    <h1 class="ui header yellow">
+      <div id="khoj">KHOJ</div></h1>
+    <br/>
+    <br/>
+        <br/>
+    <br/>
     <h2 class="ui teal image header">
+
       <img src={{ url_for('static', filename='img/cake.png') }} class="image">
       <div class="content">
-        Find Your Answers Jee bhar ke
+        Find all your answers
       </div>
     </h2>
     <form class="ui large form">
@@ -14,10 +41,10 @@
         <div class="field">
           <div class="ui left icon input">
             <i class="user icon"></i>
-            <input type="text" name="username" placeholder="Reddit Username">
+            <input type="text" name="username" list="languages" placeholder="Please ask your question">
           </div>
         </div>
-        <div class="ui fluid large teal submit button">Submit</div>
+        <div class="ui fluid large teal submit button">Ask</div>
       </div>
       <div class="ui error message"></div>
     </form>

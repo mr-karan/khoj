@@ -183,5 +183,5 @@ def result(question):
         if not results["results"]["bindings"]:
             print "No answer found :("
 
-    return print_handlers[query_type](results, target, metadata)
+    return [print_handlers[query_type](results, target, metadata), query1]
 
