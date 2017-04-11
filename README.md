@@ -1,7 +1,12 @@
-# FinalYearCSE
+# khoj
 CSE SNU Project Final Year
 
-# Instructions
+
+# About khoj
+
+Write text
+
+# Instructions to run
 
 - Create a virtualenv using `virtualenv venv -p /usr/bin/python2.7`
 - source venv/bin/activate
