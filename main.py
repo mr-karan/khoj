@@ -24,6 +24,9 @@ def check():
     query_text = session.get('query_text', None)
     return render_template('query.html', query_text=query_text)
 
+@app.route('/about')
+def blah():
+    return render_template('about.html')
 
 if __name__ == '__main__':
     app.secret_key = 'super secret key'
