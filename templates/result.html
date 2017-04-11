@@ -1,31 +1,22 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="ui middle aligned  grid">
-	<div class="eight wide centered column left floated">
-			<h4 class="ui yellow header">
-				<div class="ui four wide column">
-<br/>
-					<br/>
+<div class="ui middle aligned center aligned grid">
+	<div class="column centered eight wide">
+		<h4 class="ui header" style="color:white;">
+				<br/>
+				<br/>
+
 									 {{ answer }}
 
-				</div>
 			</h4>
-	</div>
-		<div class="eight wide centered column right floated">
-			<h4 class="ui yellow header">
-				<div class="ui four wide column">
-												<h2>You can use the query manually:</h2>
-<br/>
-					<br/>
-									 {{ query_text }}
-
-				</div>
-			</h4>
-	</div>
-
+		</div>
 	<div class="ui centered row">
-							<h5><a href="/">Check another question</a></h5>
+		<h5 class="centered"><a href="/query">Click here to view the query in SparQL format</a></h5>
+
+</div>
+<div class="ui centered row">
+	<h5 class="centered"><a href="/">Check another question</a></h5>
 
 </div>
 
