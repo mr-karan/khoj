@@ -4,6 +4,8 @@ CSE SNU Project Final Year
 
 # About khoj
 
+Natural language phrases to sparQL made easy. 
+
 Write text
 
 # Instructions to run
